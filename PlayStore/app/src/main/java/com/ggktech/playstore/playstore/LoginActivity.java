@@ -3,6 +3,7 @@ package com.ggktech.playstore.playstore;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -30,6 +31,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ggktech.playstore.playstore.dbhelper.LoginDataBaseAdapter;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,8 +56,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            "foo@example.com:hello", "bar@example.com:world"
 //    };
 
-   private static ArrayList<String> DUMMY_CREDENTIALS = new ArrayList<String>();
+    private static ArrayList<String> DUMMY_CREDENTIALS = new ArrayList<String>();
 
+    LoginDataBaseAdapter loginDataBaseAdapter;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -71,6 +75,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // create a instance of SQLite Database
+        loginDataBaseAdapter = new LoginDataBaseAdapter(this);
+        loginDataBaseAdapter = loginDataBaseAdapter.open();
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
@@ -104,9 +113,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         DUMMY_CREDENTIALS.add("bar@example.com:world");
     }
 
-    private void addDUMMY_CREDENTIALS(String email,String password){
+    private void addDUMMY_CREDENTIALS(String email, String password) {
         DUMMY_CREDENTIALS.add(email + ":" + password);
-            System.out.println(DUMMY_CREDENTIALS);
+        System.out.println(DUMMY_CREDENTIALS);
     }
 
     private void populateAutoComplete() {
@@ -171,6 +180,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
+
         boolean cancel = false;
         View focusView = null;
 
@@ -192,6 +202,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             cancel = true;
         }
 
+
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -200,6 +211,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
+
+            //TODO. add DB things and connections
+
+
             mAuthTask = new UserLoginTask(email, password);
             mAuthTask.execute((Void) null);
         }
@@ -330,18 +345,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
+//            for (String credential : DUMMY_CREDENTIALS) {
+//                String[] pieces = credential.split(":");
+//                if (pieces[0].equals(mEmail)) {
+//                    // Account exists, return true if the password matches.
+//                    return pieces[1].equals(mPassword);
+//                }
+//            }
+
+            // fetch the Password form database for respective user name
+            String storedPassword = loginDataBaseAdapter.getSinlgeEntry(mEmail);
+
+            boolean isSuccess = false;
+
+            if (storedPassword.equals("DOES NOT EXIST")) {
+                /// Create Intent for SignUpActivity  and Start The Activity
+                Intent intentSignUP = new Intent(getApplicationContext(), SignUPActivity.class);
+                startActivity(intentSignUP);
+                return true;
+
+            }
+            if (mPassword.equals(storedPassword)) { // check if the Stored password matches with  Password entered by user
+//                Toast.makeText(LoginActivity.this, "Congrats: Login Successfull", Toast.LENGTH_LONG).show();
+                isSuccess = true;
             }
 
 
-            addDUMMY_CREDENTIALS(mEmail,mPassword);
+//            else {
+//                Toast.makeText(LoginActivity.this, "User Name or Password does not match", Toast.LENGTH_LONG).show();
+//                isSuccess = false;
+//            }
+
+
             // TODO: register the new account here.
-            return true;
+          //  addDUMMY_CREDENTIALS(mEmail, mPassword);
+
+            return isSuccess;
         }
 
         @Override
@@ -350,9 +389,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Toast.makeText(getApplicationContext(),"Yeah this is the thing",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Yeah this is the thing", Toast.LENGTH_SHORT).show();
                 finish();
             } else {
+
+
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }
@@ -363,6 +404,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Close The Database
+        loginDataBaseAdapter.close();
     }
 }
 
