@@ -17,6 +17,8 @@ import android.widget.RatingBar;
 import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.activities.AddItemActivity;
 import com.ggktech.playstore.playstore.activities.ItemListActivity;
+import com.ggktech.playstore.playstore.activities.NavigationActivity;
+import com.ggktech.playstore.playstore.activities.SwipeActivity;
 import com.ggktech.playstore.playstore.models.Item;
 import com.ggktech.playstore.playstore.models.ItemSingleton;
 
@@ -81,7 +83,7 @@ public class ItemFragment extends Fragment {
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentItemList = new Intent(getActivity(), ItemListActivity.class);
+                Intent intentItemList = new Intent(getActivity(), SwipeActivity.class);
                 startActivity(intentItemList);
             }
         });
