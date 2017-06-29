@@ -10,8 +10,8 @@ import android.util.Log;
  */
 
 public class DataBaseHelper extends SQLiteOpenHelper {
-    public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version)
-    {
+
+    public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
     // Called when no database exists in disk and the helper class needs

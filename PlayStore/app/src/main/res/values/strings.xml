@@ -13,4 +13,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="item_title_hint">Enter a title for the Item.</string>
+    <string name="item_title_label">Title</string>
+    <string name="item_details_label">Details</string>
+    <string name="item_solved_label">Updated</string>
+    <string name="add_item">Add</string>
+    <string name="item_description_hint">Enter description</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.ggktech.playstore.playstore;
+package com.ggktech.playstore.playstore.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -31,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.dbhelper.LoginDataBaseAdapter;
 
 import java.util.ArrayList;
@@ -328,6 +329,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private final String mEmail;
         private final String mPassword;
+        String what = "";
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -358,16 +360,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             boolean isSuccess = false;
 
+
             if (storedPassword.equals("DOES NOT EXIST")) {
-                /// Create Intent for SignUpActivity  and Start The Activity
+                /// Create Intent for SignUpActivity and Start The Activity
                 Intent intentSignUP = new Intent(getApplicationContext(), SignUPActivity.class);
                 startActivity(intentSignUP);
+                what = "Redirecting to Register Screen";
                 return true;
 
             }
             if (mPassword.equals(storedPassword)) { // check if the Stored password matches with  Password entered by user
-//                Toast.makeText(LoginActivity.this, "Congrats: Login Successfull", Toast.LENGTH_LONG).show();
                 isSuccess = true;
+                what = "Whoo hooo!!";
             }
 
 
@@ -389,11 +393,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
-                Toast.makeText(getApplicationContext(), "Yeah this is the thing", Toast.LENGTH_SHORT).show();
-                finish();
+                Toast.makeText(getApplicationContext(), what, Toast.LENGTH_SHORT).show();
+                if(what.equals("Whoo hooo!!")){
+                    Intent intentAddItem = new Intent(getApplicationContext(),AddItemActivity.class);
+                    startActivity(intentAddItem);
+                }
+                //finish();
             } else {
-
-
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
             }

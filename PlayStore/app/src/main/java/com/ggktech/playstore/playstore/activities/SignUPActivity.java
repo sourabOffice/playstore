@@ -1,4 +1,4 @@
-package com.ggktech.playstore.playstore;
+package com.ggktech.playstore.playstore.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.dbhelper.LoginDataBaseAdapter;
 
 /**
