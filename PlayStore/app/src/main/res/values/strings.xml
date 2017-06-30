@@ -27,4 +27,5 @@
     <string name="title_activity_swipe">SwipeActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="new_item">New Item</string>
+    <string name="log_out">Log out</string>
 </resources>
