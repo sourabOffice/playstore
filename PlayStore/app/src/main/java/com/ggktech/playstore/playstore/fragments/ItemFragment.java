@@ -3,6 +3,8 @@ package com.ggktech.playstore.playstore.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Toast;
 
 import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.activities.AddItemActivity;
@@ -38,18 +41,29 @@ public class ItemFragment extends Fragment {
     private RatingBar ratingBar;
     private CheckBox mSolvedCheckBox;
     private Button mAddButton;
+    static FragmentTransaction fragmentTransaction;
+    static FragmentManager fm;
 
     public static ItemFragment newInstance(UUID itemId) {
         Bundle args = new Bundle();
         args.putSerializable(ARG_ITEM_ID, itemId);
         ItemFragment fragment = new ItemFragment();
         fragment.setArguments(args);
+
+
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+//        fm = getActivity().getSupportFragmentManager();
+//        fragmentTransaction = fm.beginTransaction();
+//        fragmentTransaction.addToBackStack("Hummer");
+//        fragmentTransaction.commit();
+
         UUID itemId = (UUID) getArguments().getSerializable(ARG_ITEM_ID);
         mItem = ItemSingleton.get(getActivity()).getItem(itemId);
     }
@@ -61,45 +75,78 @@ public class ItemFragment extends Fragment {
         mTitleField = (EditText) v.findViewById(R.id.item_title);
         if (mItem != null)
             mTitleField.setText(mItem.getTitle());
-        mTitleField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // This space intentionally left blank
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mItem.setTitle(s.toString());
-            }
+        mDescriptionField = (EditText)v.findViewById(R.id.item_description);
 
-            @Override
-            public void afterTextChanged(Editable s) {
-                // This one too
-            }
-        });
+//        mTitleField.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                // This space intentionally left blank
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                mItem.setTitle(s.toString());
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                // This one too
+//            }
+//        });
+
+        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.item_solved);
+        if (mItem != null)
+            mSolvedCheckBox.setChecked(mItem.isSolved());
+
+//        mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                // Set the item's solved property
+//                mItem.setSolved(isChecked);
+//            }
+//        });
 
         mAddButton = (Button) v.findViewById(R.id.item_add);
         //mAddButton.setEnabled(false);
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentItemList = new Intent(getActivity(), SwipeActivity.class);
-                startActivity(intentItemList);
+                Item item = new Item();
+                if(mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("")&& !mDescriptionField.getText().toString().equals("")){
+                    item.setTitle(mTitleField.getText().toString());
+                    item.setDescription(mDescriptionField.getText().toString());
+                    item.setSolved(mSolvedCheckBox.isChecked());
+
+                    ItemSingleton.get(getActivity()).addItem(item);//using singleton to access list from everywhere
+
+                    Intent intentItemList = new Intent(getActivity(), NavigationActivity.class);
+                    startActivity(intentItemList);
+
+//                    //popit
+//                     fm = getActivity()
+//                            .getSupportFragmentManager();
+//                    fm.popBackStack ("Hummer", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    getActivity().getSupportFragmentManager().popBackStack();
+                } else {
+                    Toast.makeText(getActivity(),"Please add title and description",Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        mSolvedCheckBox = (CheckBox) v.findViewById(R.id.item_solved);
-        if (mItem != null)
-            mSolvedCheckBox.setChecked(mItem.isSolved());
-        mSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // Set the crime's solved property
-                mItem.setSolved(isChecked);
-            }
-        });
+
 
         return v;
     }
 
+
+    @Override
+    public void onPause() {
+        super.onPause();
+//        //popit
+//        fm = getActivity()
+//                .getSupportFragmentManager();
+//        fm.popBackStack ("Hummer", FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getActivity().getSupportFragmentManager().popBackStack();
+    }
 }

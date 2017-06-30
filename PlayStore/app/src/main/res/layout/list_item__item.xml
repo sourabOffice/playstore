@@ -20,6 +20,7 @@
         android:layout_toLeftOf="@id/list_item__item_solved_check_box"
         android:textStyle="bold"
         android:padding="4dp"
+        android:text="No Item"
         tools:text="Item Title" />
 
     <TextView
@@ -29,5 +30,6 @@
         android:layout_toLeftOf="@id/list_item__item_solved_check_box"
         android:layout_below="@id/list_item__item_title_text_view"
         android:padding="4dp"
+        android:text="Nothing in here"
         tools:text="Item Description" />
 </RelativeLayout>

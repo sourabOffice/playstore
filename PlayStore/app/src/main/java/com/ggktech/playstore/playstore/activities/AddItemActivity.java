@@ -27,4 +27,12 @@ public class AddItemActivity extends SingleFragmentActivity {
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_ITEM_ID);
         return ItemFragment.newInstance(crimeId);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+//        Intent intent = new Intent(getApplicationContext(),NavigationActivity.class);
+//        startActivity(intent);
+    finish();
+    }
 }

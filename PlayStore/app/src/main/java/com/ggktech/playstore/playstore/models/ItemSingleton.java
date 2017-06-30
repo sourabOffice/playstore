@@ -24,14 +24,18 @@ public class ItemSingleton {
 
     private ItemSingleton(Context context) {
         mItems = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            Item item = new Item();
-            item.setTitle("Item #" + i);
-            item.setDescription("Stupid description " + i);
-            item.setSolved(i % 2 == 0);
-//             Every other one
-            mItems.add(item);
-        }
+//        for (int i = 0; i < 20; i++) {
+//            Item item = new Item();
+//            item.setTitle("Item #" + i);
+//            item.setDescription("Stupid description " + i);
+//            item.setSolved(i % 2 == 0);
+////             Every other one
+//            mItems.add(item);
+//        }
+    }
+
+    public void addItem(Item item) {
+        mItems.add(item);
     }
 
     public List<Item> getItems() {

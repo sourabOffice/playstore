@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.activities.AddItemActivity;
@@ -69,8 +68,9 @@ public class ItemListFragment extends Fragment {
             mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item__item_solved_check_box);
         }
 
-        public void bindCrime(Item item) {
+        public void bindItem(Item item) {
             mItem = item;
+
             mTitleTextView.setText(mItem.getTitle());
             mDescriptionTextView.setText(mItem.getDescription().toString());
             mSolvedCheckBox.setChecked(mItem.isSolved());
@@ -102,7 +102,7 @@ public class ItemListFragment extends Fragment {
         @Override
         public void onBindViewHolder(ItemHolder holder, int position) {
             Item item = mItems.get(position);
-            holder.bindCrime(item);
+            holder.bindItem(item);
         }
 
         @Override
