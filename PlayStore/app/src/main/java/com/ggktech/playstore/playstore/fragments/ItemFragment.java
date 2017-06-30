@@ -49,21 +49,12 @@ public class ItemFragment extends Fragment {
         args.putSerializable(ARG_ITEM_ID, itemId);
         ItemFragment fragment = new ItemFragment();
         fragment.setArguments(args);
-
-
-
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        fm = getActivity().getSupportFragmentManager();
-//        fragmentTransaction = fm.beginTransaction();
-//        fragmentTransaction.addToBackStack("Hummer");
-//        fragmentTransaction.commit();
-
         UUID itemId = (UUID) getArguments().getSerializable(ARG_ITEM_ID);
         mItem = ItemSingleton.get(getActivity()).getItem(itemId);
     }
@@ -76,7 +67,7 @@ public class ItemFragment extends Fragment {
         if (mItem != null)
             mTitleField.setText(mItem.getTitle());
 
-        mDescriptionField = (EditText)v.findViewById(R.id.item_description);
+        mDescriptionField = (EditText) v.findViewById(R.id.item_description);
 
 //        mTitleField.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -113,7 +104,7 @@ public class ItemFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Item item = new Item();
-                if(mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("")&& !mDescriptionField.getText().toString().equals("")){
+                if (mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("") && !mDescriptionField.getText().toString().equals("")) {
                     item.setTitle(mTitleField.getText().toString());
                     item.setDescription(mDescriptionField.getText().toString());
                     item.setSolved(mSolvedCheckBox.isChecked());
@@ -123,30 +114,18 @@ public class ItemFragment extends Fragment {
                     Intent intentItemList = new Intent(getActivity(), NavigationActivity.class);
                     startActivity(intentItemList);
 
-//                    //popit
-//                     fm = getActivity()
-//                            .getSupportFragmentManager();
-//                    fm.popBackStack ("Hummer", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    getActivity().getSupportFragmentManager().popBackStack();
+                    getActivity().finish();
                 } else {
-                    Toast.makeText(getActivity(),"Please add title and description",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please add title and description", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
-
         return v;
     }
-
 
     @Override
     public void onPause() {
         super.onPause();
-//        //popit
-//        fm = getActivity()
-//                .getSupportFragmentManager();
-//        fm.popBackStack ("Hummer", FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        getActivity().getSupportFragmentManager().popBackStack();
+        getActivity().finish();
     }
 }

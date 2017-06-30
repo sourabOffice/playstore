@@ -31,8 +31,8 @@ public class AddItemActivity extends SingleFragmentActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        Intent intent = new Intent(getApplicationContext(),NavigationActivity.class);
-//        startActivity(intent);
-    finish();
+        finish();
     }
+
+
 }

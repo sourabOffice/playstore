@@ -1,6 +1,7 @@
 package com.ggktech.playstore.playstore.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,6 +23,7 @@ import com.ggktech.playstore.playstore.fragments.ItemListFragment;
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    SharedPreferences settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +117,16 @@ public class NavigationActivity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
+            //
+            settings = getSharedPreferences("mySharedPref",0);
 
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("connected", false);
+            editor.commit();
+
+            finish();
+//            Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
+//            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
