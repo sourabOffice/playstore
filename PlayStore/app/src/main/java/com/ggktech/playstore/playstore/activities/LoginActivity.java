@@ -360,7 +360,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
 
             // fetch the Password from database for respective user name
-            String storedPassword = dataBaseAdapter.getSinlgeEntry(mEmail);
+            String storedPassword = dataBaseAdapter.getSinlgeEntryLOGIN(mEmail);
 
             boolean isSuccess = false;
 

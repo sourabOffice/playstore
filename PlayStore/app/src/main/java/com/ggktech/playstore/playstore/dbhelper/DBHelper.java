@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     private static final String DATABASE_ITEM_TABLE_QUERY = "create table "+DATABASE_ITEM_TABLE +
-            "( "+ "_id"+" integer primary key autoincrement,"+ "TITLE text,"+
+            "( "+ "_id"+" integer primary key autoincrement,"+ "TITLE text,"+ "UUID text,"+
             "DESCRIPTION text); ";
 //            "DESCRIPTION text,"+"Amount text,"+"Banks text); ";
 

@@ -57,18 +57,20 @@ public class ItemListFragment extends Fragment {
     }
 
     private void updateUI() {
-        ItemSingleton itemSingleton = ItemSingleton.get(getActivity());
+        //ItemSingleton itemSingleton = ItemSingleton.get(getActivity());
        // List<Item> items = itemSingleton.getItems();
-       Cursor mCursor =  dataBaseAdapter.fetchAllItemTableData();
+
+        Cursor mCursor =  dataBaseAdapter.fetchAllItemTableData();
 
         List<Item> items = new ArrayList<Item>();
         while(mCursor.moveToNext()) {
             Item item = new Item();
+            item.getId();
             item.setTitle(mCursor.getString(mCursor.getColumnIndex("TITLE")));
             item.setDescription(mCursor.getString(mCursor.getColumnIndex("DESCRIPTION")));
             items.add(item); //add the item
         }
-        
+
         //write the code to get items from db
 
         if (mAdapter == null) {

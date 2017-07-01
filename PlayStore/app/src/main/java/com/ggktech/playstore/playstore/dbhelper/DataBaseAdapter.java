@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.ggktech.playstore.playstore.models.Item;
 import com.ggktech.playstore.playstore.models.User;
 
+import java.util.UUID;
+
 /**
  * Created by Sourabh.Wasnik on 6/28/2017.
  */
@@ -47,6 +49,13 @@ public class DataBaseAdapter {
                 "DESCRIPTION" },null,null,null,null,null);
     }
 
+    public void deleteTable(String tablename){
+        database.execSQL("drop table if exists "+tablename+';');
+    }
+    public void createIndividualTable(String query){
+        database.execSQL(query);
+    }
+
     public void insertEntryIntoLoginTable(User user) {
         ContentValues values = new ContentValues();
         values.put("USERNAME", user.getEmail());
@@ -58,6 +67,7 @@ public class DataBaseAdapter {
 
     public void insertEntryIntoItemTable(Item item){
         ContentValues values = new ContentValues();
+        values.put("UUID", String.valueOf(item.getId()));
         values.put("TITLE",item.getTitle());
         values.put("DESCRIPTION",item.getDescription());
 
@@ -69,7 +79,7 @@ public class DataBaseAdapter {
         return values;
     }
 
-    public String getSinlgeEntry(String mEmail) {
+    public String getSinlgeEntryLOGIN(String mEmail) {
         Cursor cursor = database.query(DBHelper.DATABASE_LOGIN_TABLE, null, " USERNAME=?", new String[]{mEmail}, null, null, null);
         if (cursor.getCount() < 1) // mEmail does Not Exist
         {
@@ -80,6 +90,26 @@ public class DataBaseAdapter {
         String password = cursor.getString(cursor.getColumnIndex("PASSWORD"));
         cursor.close();
         return password;
+    }
+
+    public Item getSingleEntryITEM(UUID itemId){
+        Item item = new Item();
+
+        Cursor cursor = database.query(DBHelper.DATABASE_ITEM_TABLE, null, " UUID=?", new String[]{String.valueOf(itemId)}, null, null, null);
+        if (cursor.getCount() < 1) {// mEmail does Not Exist
+            cursor.close();
+            return null;
+        }
+        cursor.moveToFirst();
+        cursor.getString(cursor.getColumnIndex("UUID"));
+        String title = cursor.getString(cursor.getColumnIndex("TITLE"));
+        String description = cursor.getString(cursor.getColumnIndex("DESCRIPTION"));
+
+        item.setTitle(title);
+        item.setDescription(description);
+        cursor.close();
+
+        return item;
     }
 
     public void updateEntry(String userName, String password) {
@@ -93,16 +123,16 @@ public class DataBaseAdapter {
         database.update(DBHelper.DATABASE_LOGIN_TABLE, updatedValues, where, new String[]{userName});
     }
 
-    public SQLiteDatabase getDatabaseInstance() {
-        return database;
-    }
-
     public int deleteEntry(String UserName) {
         //String id=String.valueOf(ID);
         String where = "USERNAME=?";
         int numberOFEntriesDeleted = database.delete(DBHelper.DATABASE_LOGIN_TABLE, where, new String[]{UserName});
         // Toast.makeText(context, "Number fo Entry Deleted Successfully : "+numberOFEntriesDeleted, Toast.LENGTH_LONG).show();
         return numberOFEntriesDeleted;
+    }
+
+    public SQLiteDatabase getDatabaseInstance() {
+        return database;
     }
 
     public static final int NAME_COLUMN = 1;

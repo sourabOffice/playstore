@@ -65,7 +65,11 @@ public class ItemFragment extends Fragment {
         dataBaseAdapter = dataBaseAdapter.open();
 
         UUID itemId = (UUID) getArguments().getSerializable(ARG_ITEM_ID);
-        mItem = ItemSingleton.get(getActivity()).getItem(itemId);
+
+//        mItem = ItemSingleton.get(getActivity()).getItem(itemId);
+
+        //here comes the mItem from Database
+        mItem = dataBaseAdapter.getSingleEntryITEM(itemId);
     }
 
     @Override
@@ -115,13 +119,16 @@ public class ItemFragment extends Fragment {
 
                 if (mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("") && !mDescriptionField.getText().toString().equals("")) {
                     Item item = new Item();
+
+                    item.getId();
+
                     item.setTitle(mTitleField.getText().toString());
                     item.setDescription(mDescriptionField.getText().toString());
                     item.setSolved(mSolvedCheckBox.isChecked());
 
                     dataBaseAdapter.insertEntryIntoItemTable(item);
 
-                    ItemSingleton.get(getActivity()).addItem(item);//using singleton to access list from everywhere
+                    //ItemSingleton.get(getActivity()).addItem(item);//using singleton to access list from everywhere
 
                     Intent intentItemList = new Intent(getActivity(), NavigationActivity.class);
                     startActivity(intentItemList);
