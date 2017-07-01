@@ -1,7 +1,9 @@
 package com.ggktech.playstore.playstore.fragments;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,9 +15,11 @@ import android.widget.TextView;
 
 import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.activities.AddItemActivity;
+import com.ggktech.playstore.playstore.dbhelper.DataBaseAdapter;
 import com.ggktech.playstore.playstore.models.Item;
 import com.ggktech.playstore.playstore.models.ItemSingleton;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +30,16 @@ public class ItemListFragment extends Fragment {
 
     private RecyclerView mItemRecyclerView;
     private ItemAdapter mAdapter;
+
+    DataBaseAdapter dataBaseAdapter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // get Instance  of Database Adapter
+        dataBaseAdapter = new DataBaseAdapter(getActivity());
+        dataBaseAdapter = dataBaseAdapter.open();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,7 +58,19 @@ public class ItemListFragment extends Fragment {
 
     private void updateUI() {
         ItemSingleton itemSingleton = ItemSingleton.get(getActivity());
-        List<Item> items = itemSingleton.getItems();
+       // List<Item> items = itemSingleton.getItems();
+       Cursor mCursor =  dataBaseAdapter.fetchAllItemTableData();
+
+        List<Item> items = new ArrayList<Item>();
+        while(mCursor.moveToNext()) {
+            Item item = new Item();
+            item.setTitle(mCursor.getString(mCursor.getColumnIndex("TITLE")));
+            item.setDescription(mCursor.getString(mCursor.getColumnIndex("DESCRIPTION")));
+            items.add(item); //add the item
+        }
+        
+        //write the code to get items from db
+
         if (mAdapter == null) {
             mAdapter = new ItemAdapter(items);
             mItemRecyclerView.setAdapter(mAdapter);

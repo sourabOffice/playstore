@@ -33,8 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ggktech.playstore.playstore.R;
-import com.ggktech.playstore.playstore.dbhelper.LoginDataBaseAdapter;
-import com.ggktech.playstore.playstore.models.ItemSingleton;
+import com.ggktech.playstore.playstore.dbhelper.DataBaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private static ArrayList<String> DUMMY_CREDENTIALS = new ArrayList<String>();
 
-    LoginDataBaseAdapter loginDataBaseAdapter;
+    DataBaseAdapter dataBaseAdapter;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -91,8 +90,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
 
         // create a instance of SQLite Database
-        loginDataBaseAdapter = new LoginDataBaseAdapter(this);
-        loginDataBaseAdapter = loginDataBaseAdapter.open();
+        dataBaseAdapter = new DataBaseAdapter(this);
+        dataBaseAdapter = dataBaseAdapter.open();
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -360,8 +359,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
-            // fetch the Password form database for respective user name
-            String storedPassword = loginDataBaseAdapter.getSinlgeEntry(mEmail);
+            // fetch the Password from database for respective user name
+            String storedPassword = dataBaseAdapter.getSinlgeEntry(mEmail);
 
             boolean isSuccess = false;
 
@@ -429,7 +428,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     protected void onDestroy() {
         super.onDestroy();
         // Close The Database
-        loginDataBaseAdapter.close();
+        dataBaseAdapter.close();
     }
 }
 

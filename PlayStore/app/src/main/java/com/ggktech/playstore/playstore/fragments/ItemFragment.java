@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.ggktech.playstore.playstore.activities.AddItemActivity;
 import com.ggktech.playstore.playstore.activities.ItemListActivity;
 import com.ggktech.playstore.playstore.activities.NavigationActivity;
 import com.ggktech.playstore.playstore.activities.SwipeActivity;
+import com.ggktech.playstore.playstore.dbhelper.DBHelper;
+import com.ggktech.playstore.playstore.dbhelper.DataBaseAdapter;
 import com.ggktech.playstore.playstore.models.Item;
 import com.ggktech.playstore.playstore.models.ItemSingleton;
 
@@ -43,6 +46,7 @@ public class ItemFragment extends Fragment {
     private Button mAddButton;
     static FragmentTransaction fragmentTransaction;
     static FragmentManager fm;
+    DataBaseAdapter dataBaseAdapter;
 
     public static ItemFragment newInstance(UUID itemId) {
         Bundle args = new Bundle();
@@ -55,6 +59,11 @@ public class ItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // get Instance  of Database Adapter
+        dataBaseAdapter =new DataBaseAdapter(getActivity());
+        dataBaseAdapter = dataBaseAdapter.open();
+
         UUID itemId = (UUID) getArguments().getSerializable(ARG_ITEM_ID);
         mItem = ItemSingleton.get(getActivity()).getItem(itemId);
     }
@@ -103,11 +112,14 @@ public class ItemFragment extends Fragment {
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Item item = new Item();
+
                 if (mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("") && !mDescriptionField.getText().toString().equals("")) {
+                    Item item = new Item();
                     item.setTitle(mTitleField.getText().toString());
                     item.setDescription(mDescriptionField.getText().toString());
                     item.setSolved(mSolvedCheckBox.isChecked());
+
+                    dataBaseAdapter.insertEntryIntoItemTable(item);
 
                     ItemSingleton.get(getActivity()).addItem(item);//using singleton to access list from everywhere
 
@@ -127,5 +139,11 @@ public class ItemFragment extends Fragment {
     public void onPause() {
         super.onPause();
         getActivity().finish();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        dataBaseAdapter.close();
     }
 }
