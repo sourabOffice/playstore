@@ -124,7 +124,7 @@ public class DataBaseAdapter {
         database.update(DBHelper.DATABASE_LOGIN_TABLE, updatedValues, where, new String[]{userName});
     }
 
-    public int deleteEntry(String UserName) {
+    public int deleteEntryLogin(String UserName) {
         //String id=String.valueOf(ID);
         String where = "USERNAME=?";
         int numberOFEntriesDeleted = database.delete(DBHelper.DATABASE_LOGIN_TABLE, where, new String[]{UserName});

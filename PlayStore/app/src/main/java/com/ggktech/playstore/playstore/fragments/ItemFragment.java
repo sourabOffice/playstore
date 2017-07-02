@@ -48,6 +48,7 @@ public class ItemFragment extends Fragment {
     static FragmentTransaction fragmentTransaction;
     static FragmentManager fm;
     DataBaseAdapter dataBaseAdapter;
+    boolean comingFromList;
 
     public static ItemFragment newInstance(String secretTitle) {
         Bundle args = new Bundle();
@@ -73,6 +74,11 @@ public class ItemFragment extends Fragment {
         if (itemTitle != null && !itemTitle.equals(""))
             mItem = dataBaseAdapter.getSingleEntryITEM(itemTitle);
 
+        if (mItem != null) {
+            comingFromList = true;
+        } else {
+            comingFromList = false;
+        }
 
     }
 
@@ -82,11 +88,11 @@ public class ItemFragment extends Fragment {
 
         mTitleField = (EditText) v.findViewById(R.id.item_title);
         mDescriptionField = (EditText) v.findViewById(R.id.item_description);
+
         if (mItem != null)
             mTitleField.setText(mItem.getTitle());
-        if(mItem != null)
+        if (mItem != null)
             mDescriptionField.setText(mItem.getDescription());
-
 
 
 //        mTitleField.addTextChangedListener(new TextWatcher() {
@@ -120,28 +126,38 @@ public class ItemFragment extends Fragment {
 
         mAddButton = (Button) v.findViewById(R.id.item_add);
         //mAddButton.setEnabled(false);
+        if(comingFromList)
+            mAddButton.setText("Delete");
+
         mAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!comingFromList) {
+                    if (mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("") && !mDescriptionField.getText().toString().equals("")) {
+                        Item item = new Item();
 
-                if (mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("") && !mDescriptionField.getText().toString().equals("")) {
-                    Item item = new Item();
 
+                        item.setTitle(mTitleField.getText().toString());
+                        item.setDescription(mDescriptionField.getText().toString());
+                        item.setSolved(mSolvedCheckBox.isChecked());
 
-                    item.setTitle(mTitleField.getText().toString());
-                    item.setDescription(mDescriptionField.getText().toString());
-                    item.setSolved(mSolvedCheckBox.isChecked());
+                        dataBaseAdapter.insertEntryIntoItemTable(item);
 
-                    dataBaseAdapter.insertEntryIntoItemTable(item);
+                        //ItemSingleton.get(getActivity()).addItem(item);//using singleton to access list from everywhere
 
-                    //ItemSingleton.get(getActivity()).addItem(item);//using singleton to access list from everywhere
+                        Intent intentItemList = new Intent(getActivity(), NavigationActivity.class);
+                        startActivity(intentItemList);
 
-                    Intent intentItemList = new Intent(getActivity(), NavigationActivity.class);
-                    startActivity(intentItemList);
-
-                    getActivity().finish();
+                        getActivity().finish();
+                    } else {
+                        Toast.makeText(getActivity(), "Please add title and description", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getActivity(), "Please add title and description", Toast.LENGTH_SHORT).show();
+                    //do the delete code
+                    if (mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("") && !mDescriptionField.getText().toString().equals("")) {
+                        dataBaseAdapter.deleteEntryItem(mTitleField.getText().toString());
+                        getActivity().finish();
+                    }
                 }
             }
         });

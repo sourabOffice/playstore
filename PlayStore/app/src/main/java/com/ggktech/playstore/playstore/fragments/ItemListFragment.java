@@ -29,7 +29,7 @@ import java.util.List;
 public class ItemListFragment extends Fragment {
 
     private RecyclerView mItemRecyclerView;
-    private ItemAdapter mAdapter;
+    private  ItemAdapter mAdapter;
 
     DataBaseAdapter dataBaseAdapter;
 
@@ -76,9 +76,10 @@ public class ItemListFragment extends Fragment {
         if (mAdapter == null) {
             mAdapter = new ItemAdapter(items);
             mItemRecyclerView.setAdapter(mAdapter);
-        } else {
-            mAdapter.notifyDataSetChanged();
         }
+            mAdapter.mItems = items;
+            mAdapter.notifyDataSetChanged();
+
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
