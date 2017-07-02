@@ -7,18 +7,14 @@ import java.util.UUID;
  */
 
 public class Item {
-    private UUID mId;
+
     private String mTitle;
     private String mDescription;
+
     private boolean mSolved;//new or old
 
     public Item() {
-        // Generate unique identifier
-        mId = UUID.randomUUID();
-    }
 
-    public UUID getId() {
-        return mId;
     }
 
     public String getTitle() {

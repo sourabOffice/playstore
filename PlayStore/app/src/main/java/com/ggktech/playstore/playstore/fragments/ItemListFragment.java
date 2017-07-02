@@ -65,7 +65,7 @@ public class ItemListFragment extends Fragment {
         List<Item> items = new ArrayList<Item>();
         while(mCursor.moveToNext()) {
             Item item = new Item();
-            item.getId();
+
             item.setTitle(mCursor.getString(mCursor.getColumnIndex("TITLE")));
             item.setDescription(mCursor.getString(mCursor.getColumnIndex("DESCRIPTION")));
             items.add(item); //add the item
@@ -106,7 +106,7 @@ public class ItemListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            Intent intent = AddItemActivity.newIntent(getActivity(), mItem.getId());
+            Intent intent = AddItemActivity.newIntent(getActivity(), mItem.getTitle());
             startActivity(intent);
 
         }

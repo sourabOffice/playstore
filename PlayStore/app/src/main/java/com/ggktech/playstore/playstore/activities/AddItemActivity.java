@@ -14,18 +14,18 @@ import java.util.UUID;
 
 public class AddItemActivity extends SingleFragmentActivity {
 
-    private static final String EXTRA_ITEM_ID = "com.ggktech.playstore.playstore.item_id";
+    private static final String EXTRA_ITEM_TITLE = "com.ggktech.playstore.playstore.item_title";
 
-    public static Intent newIntent(Context packageContext, UUID itemId) {
+    public static Intent newIntent(Context packageContext, String secretTitle) {
         Intent intent = new Intent(packageContext, AddItemActivity.class);
-        intent.putExtra(EXTRA_ITEM_ID, itemId);
+        intent.putExtra(EXTRA_ITEM_TITLE, secretTitle);
         return intent;
     }
 
     @Override
     protected Fragment createFragment() {
-        UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_ITEM_ID);
-        return ItemFragment.newInstance(crimeId);
+        String itemTitle = (String) getIntent().getSerializableExtra(EXTRA_ITEM_TITLE);
+        return ItemFragment.newInstance(itemTitle);
     }
 
     @Override

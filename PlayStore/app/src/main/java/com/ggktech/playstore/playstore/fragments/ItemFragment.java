@@ -1,6 +1,7 @@
 package com.ggktech.playstore.playstore.fragments;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -36,7 +37,7 @@ import java.util.UUID;
 
 public class ItemFragment extends Fragment {
 
-    private static final String ARG_ITEM_ID = "item_id";
+    private static final String ARG_ITEM_TITLE = "item_title";
 
     private Item mItem;
     private EditText mTitleField;
@@ -48,9 +49,9 @@ public class ItemFragment extends Fragment {
     static FragmentManager fm;
     DataBaseAdapter dataBaseAdapter;
 
-    public static ItemFragment newInstance(UUID itemId) {
+    public static ItemFragment newInstance(String secretTitle) {
         Bundle args = new Bundle();
-        args.putSerializable(ARG_ITEM_ID, itemId);
+        args.putSerializable(ARG_ITEM_TITLE, secretTitle);
         ItemFragment fragment = new ItemFragment();
         fragment.setArguments(args);
         return fragment;
@@ -61,15 +62,18 @@ public class ItemFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // get Instance  of Database Adapter
-        dataBaseAdapter =new DataBaseAdapter(getActivity());
+        dataBaseAdapter = new DataBaseAdapter(getActivity());
         dataBaseAdapter = dataBaseAdapter.open();
 
-        UUID itemId = (UUID) getArguments().getSerializable(ARG_ITEM_ID);
+        String itemTitle = (String) getArguments().getSerializable(ARG_ITEM_TITLE);
 
 //        mItem = ItemSingleton.get(getActivity()).getItem(itemId);
 
         //here comes the mItem from Database
-        mItem = dataBaseAdapter.getSingleEntryITEM(itemId);
+        if (itemTitle != null && !itemTitle.equals(""))
+            mItem = dataBaseAdapter.getSingleEntryITEM(itemTitle);
+
+
     }
 
     @Override
@@ -77,10 +81,13 @@ public class ItemFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_item, container, false);
 
         mTitleField = (EditText) v.findViewById(R.id.item_title);
+        mDescriptionField = (EditText) v.findViewById(R.id.item_description);
         if (mItem != null)
             mTitleField.setText(mItem.getTitle());
+        if(mItem != null)
+            mDescriptionField.setText(mItem.getDescription());
 
-        mDescriptionField = (EditText) v.findViewById(R.id.item_description);
+
 
 //        mTitleField.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -120,7 +127,6 @@ public class ItemFragment extends Fragment {
                 if (mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("") && !mDescriptionField.getText().toString().equals("")) {
                     Item item = new Item();
 
-                    item.getId();
 
                     item.setTitle(mTitleField.getText().toString());
                     item.setDescription(mDescriptionField.getText().toString());

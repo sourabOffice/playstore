@@ -52,6 +52,7 @@ public class DataBaseAdapter {
     public void deleteTable(String tablename){
         database.execSQL("drop table if exists "+tablename+';');
     }
+
     public void createIndividualTable(String query){
         database.execSQL(query);
     }
@@ -67,7 +68,7 @@ public class DataBaseAdapter {
 
     public void insertEntryIntoItemTable(Item item){
         ContentValues values = new ContentValues();
-        values.put("UUID", String.valueOf(item.getId()));
+
         values.put("TITLE",item.getTitle());
         values.put("DESCRIPTION",item.getDescription());
 
@@ -92,16 +93,16 @@ public class DataBaseAdapter {
         return password;
     }
 
-    public Item getSingleEntryITEM(UUID itemId){
+    public Item getSingleEntryITEM(String secretTitle){
         Item item = new Item();
 
-        Cursor cursor = database.query(DBHelper.DATABASE_ITEM_TABLE, null, " UUID=?", new String[]{String.valueOf(itemId)}, null, null, null);
-        if (cursor.getCount() < 1) {// mEmail does Not Exist
+        Cursor cursor = database.query(DBHelper.DATABASE_ITEM_TABLE, null, " TITLE=?", new String[]{secretTitle},
+                null, null, null);
+        if (cursor.getCount() < 1) {// item does Not Exist
             cursor.close();
             return null;
         }
         cursor.moveToFirst();
-        cursor.getString(cursor.getColumnIndex("UUID"));
         String title = cursor.getString(cursor.getColumnIndex("TITLE"));
         String description = cursor.getString(cursor.getColumnIndex("DESCRIPTION"));
 
@@ -127,6 +128,14 @@ public class DataBaseAdapter {
         //String id=String.valueOf(ID);
         String where = "USERNAME=?";
         int numberOFEntriesDeleted = database.delete(DBHelper.DATABASE_LOGIN_TABLE, where, new String[]{UserName});
+        // Toast.makeText(context, "Number fo Entry Deleted Successfully : "+numberOFEntriesDeleted, Toast.LENGTH_LONG).show();
+        return numberOFEntriesDeleted;
+    }
+
+    public int deleteEntryItem(String title) {
+        //String id=String.valueOf(ID);
+        String where = "TITLE=?";
+        int numberOFEntriesDeleted = database.delete(DBHelper.DATABASE_ITEM_TABLE, where, new String[]{title});
         // Toast.makeText(context, "Number fo Entry Deleted Successfully : "+numberOFEntriesDeleted, Toast.LENGTH_LONG).show();
         return numberOFEntriesDeleted;
     }

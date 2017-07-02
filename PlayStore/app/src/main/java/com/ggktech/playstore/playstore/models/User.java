@@ -7,18 +7,15 @@ import java.util.UUID;
  */
 
 public class User {
-    private UUID mId;
+
     private String mEmail;
     private String mPassword;
 
     public User() {
-        // Generate unique identifier
-        mId = UUID.randomUUID();
+
     }
 
-    public UUID getId() {
-        return mId;
-    }
+
 
     public String getEmail() {
         return mEmail;

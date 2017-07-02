@@ -44,9 +44,9 @@ public class ItemSingleton {
 
     public Item getItem(UUID id) {
         for (Item item : mItems) {
-            if (item.getId().equals(id)) {
-                return item;
-            }
+//            if (item.getId().equals(id)) {
+//                return item;
+//            }
         }
         return null;
     }
