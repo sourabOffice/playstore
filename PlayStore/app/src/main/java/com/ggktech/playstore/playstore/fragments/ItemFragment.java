@@ -2,6 +2,7 @@ package com.ggktech.playstore.playstore.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -31,6 +33,8 @@ import com.ggktech.playstore.playstore.models.ItemSingleton;
 
 import java.util.UUID;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by Sourabh.Wasnik on 6/29/2017.
  */
@@ -40,6 +44,7 @@ public class ItemFragment extends Fragment {
     private static final String ARG_ITEM_TITLE = "item_title";
 
     private Item mItem;
+    private ImageView mImageView;
     private EditText mTitleField;
     private EditText mDescriptionField;
     private RatingBar ratingBar;
@@ -49,6 +54,7 @@ public class ItemFragment extends Fragment {
     static FragmentManager fm;
     DataBaseAdapter dataBaseAdapter;
     boolean comingFromList;
+    Uri savedUri;
 
     public static ItemFragment newInstance(String secretTitle) {
         Bundle args = new Bundle();
@@ -85,6 +91,8 @@ public class ItemFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_item, container, false);
+
+
 
         mTitleField = (EditText) v.findViewById(R.id.item_title);
         mDescriptionField = (EditText) v.findViewById(R.id.item_description);
@@ -124,6 +132,26 @@ public class ItemFragment extends Fragment {
 //            }
 //        });
 
+        mImageView = (ImageView)v.findViewById(R.id.imageview_item);
+        if (mItem != null){
+
+//            Toast.makeText(getActivity(),"ItemFragment mItem is not null "+ mItem.getmImageUri(),Toast.LENGTH_LONG).show();
+                mImageView.setImageResource(R.drawable.ic_menu_camera);
+            mImageView.setImageURI(mItem.getmImageUri());
+        }
+
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
+                startActivityForResult(Intent.createChooser(intent,"Select Image"), 1);
+            }
+        });
+
+
+
         mAddButton = (Button) v.findViewById(R.id.item_add);
         //mAddButton.setEnabled(false);
         if(comingFromList)
@@ -139,6 +167,8 @@ public class ItemFragment extends Fragment {
 
                         item.setTitle(mTitleField.getText().toString());
                         item.setDescription(mDescriptionField.getText().toString());
+                        item.setmImageUri(savedUri);//check
+
                         item.setSolved(mSolvedCheckBox.isChecked());
 
                         dataBaseAdapter.insertEntryIntoItemTable(item);
@@ -165,9 +195,22 @@ public class ItemFragment extends Fragment {
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            if (requestCode == 1){
+                savedUri = data.getData();
+                mImageView.setImageURI(savedUri);//OK
+//                Toast.makeText(getActivity(),"ItemFragment onactivityresult"+ savedUri,Toast.LENGTH_LONG).show();
+
+            }
+        }
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
-        getActivity().finish();
+        //getActivity().finish();
     }
 
     @Override

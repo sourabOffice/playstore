@@ -12,10 +12,13 @@
         android:text="@string/item_title_label" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"/>
+        android:id="@+id/imageview_item"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/ic_launcher" />
 
     <EditText
         android:id="@+id/item_title"

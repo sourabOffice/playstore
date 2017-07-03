@@ -1,5 +1,7 @@
 package com.ggktech.playstore.playstore.models;
 
+import android.net.Uri;
+
 import java.util.UUID;
 
 /**
@@ -10,11 +12,19 @@ public class Item {
 
     private String mTitle;
     private String mDescription;
-
+    private Uri mImageUri;
     private boolean mSolved;//new or old
 
     public Item() {
 
+    }
+
+    public Uri getmImageUri() {
+        return mImageUri;
+    }
+
+    public void setmImageUri(Uri mImageUri) {
+        this.mImageUri = mImageUri;
     }
 
     public String getTitle() {

@@ -2,6 +2,7 @@ package com.ggktech.playstore.playstore.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.activities.AddItemActivity;
@@ -29,7 +32,8 @@ import java.util.List;
 public class ItemListFragment extends Fragment {
 
     private RecyclerView mItemRecyclerView;
-    private  ItemAdapter mAdapter;
+    private ItemAdapter mAdapter;
+
 
     DataBaseAdapter dataBaseAdapter;
 
@@ -68,6 +72,19 @@ public class ItemListFragment extends Fragment {
 
             item.setTitle(mCursor.getString(mCursor.getColumnIndex("TITLE")));
             item.setDescription(mCursor.getString(mCursor.getColumnIndex("DESCRIPTION")));
+            item.setmImageUri(Uri.parse(mCursor.getString(mCursor.getColumnIndex("URI"))));
+//            Toast.makeText(getActivity(),"ItemFragment updateUI() "+ Uri.parse(mCursor.getString(mCursor.getColumnIndex("URI"))),Toast.LENGTH_LONG).show();
+
+
+            int checkboxInt= mCursor.getInt(mCursor.getColumnIndex("CHECKBOX"));
+            boolean convertedBoolean;
+            if (checkboxInt == 1)
+                convertedBoolean = true;
+            else
+                convertedBoolean = false;
+
+
+            item.setSolved(convertedBoolean);
             items.add(item); //add the item
         }
 
@@ -87,6 +104,7 @@ public class ItemListFragment extends Fragment {
 
         private TextView mTitleTextView;
         private TextView mDescriptionTextView;
+        private ImageView mImageView;
         private CheckBox mSolvedCheckBox;
 
         public ItemHolder(View itemView) {
@@ -94,6 +112,7 @@ public class ItemListFragment extends Fragment {
             itemView.setOnClickListener(this);
             mTitleTextView = (TextView) itemView.findViewById(R.id.list_item__item_title_text_view);
             mDescriptionTextView = (TextView) itemView.findViewById(R.id.list_item__item_description_text_view);
+            mImageView =(ImageView)itemView.findViewById(R.id.imageView_list);
             mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item__item_solved_check_box);
         }
 
@@ -101,7 +120,10 @@ public class ItemListFragment extends Fragment {
             mItem = item;
 
             mTitleTextView.setText(mItem.getTitle());
-            mDescriptionTextView.setText(mItem.getDescription().toString());
+            mDescriptionTextView.setText(mItem.getDescription());
+            mImageView.setImageURI(mItem.getmImageUri());
+//            Toast.makeText(getActivity(),"ItemListFragment bindItem "+ mItem.getmImageUri(),Toast.LENGTH_LONG).show();
+
             mSolvedCheckBox.setChecked(mItem.isSolved());
         }
 

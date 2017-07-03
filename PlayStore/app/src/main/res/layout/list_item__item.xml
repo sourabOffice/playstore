@@ -1,35 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="4dp">
 
     <CheckBox
         android:id="@+id/list_item__item_solved_check_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:padding="4dp"
-         />
+        android:padding="4dp" />
 
-    <TextView
-        android:id="@+id/list_item__item_title_text_view"
+    <RelativeLayout
+        android:id="@+id/text_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/list_item__item_solved_check_box"
-        android:textStyle="bold"
-        android:padding="4dp"
-        android:text="No Item"
-        tools:text="Item Title" />
+        android:layout_alignParentTop="true"
 
-    <TextView
-        android:id="@+id/list_item__item_description_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/list_item__item_solved_check_box"
-        android:layout_below="@id/list_item__item_title_text_view"
-        android:padding="4dp"
-        android:text="Nothing in here"
-        tools:text="Item Description" />
+        android:layout_toRightOf="@+id/imageView_list">
+
+        <TextView
+            android:id="@+id/list_item__item_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="4dp"
+            android:text="No Item"
+            android:textStyle="bold"
+            tools:text="Item Title" />
+
+        <TextView
+            android:id="@+id/list_item__item_description_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/list_item__item_title_text_view"
+
+            android:padding="4dp"
+            android:text="Nothing in here"
+            tools:text="Item Description" />
+
+
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_below="@id/list_item__item_description_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/imageView_list"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+
+        app:srcCompat="@mipmap/ic_launcher" />
 </RelativeLayout>

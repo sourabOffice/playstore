@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.ggktech.playstore.playstore.models.Item;
 import com.ggktech.playstore.playstore.models.User;
@@ -46,7 +47,7 @@ public class DataBaseAdapter {
 
     public Cursor fetchAllItemTableData(){
         return database.query(DBHelper.DATABASE_ITEM_TABLE, new String[]{"TITLE",
-                "DESCRIPTION" },null,null,null,null,null);
+                "DESCRIPTION","URI","CHECKBOX" },null,null,null,null,null);
     }
 
     public void deleteTable(String tablename){
@@ -71,6 +72,9 @@ public class DataBaseAdapter {
 
         values.put("TITLE",item.getTitle());
         values.put("DESCRIPTION",item.getDescription());
+        values.put("URI",item.getmImageUri().toString());
+
+        values.put("CHECKBOX",(item.isSolved()) ? 1 : 0);
 
         database.insert(DBHelper.DATABASE_ITEM_TABLE,null,values);
     }
@@ -105,9 +109,23 @@ public class DataBaseAdapter {
         cursor.moveToFirst();
         String title = cursor.getString(cursor.getColumnIndex("TITLE"));
         String description = cursor.getString(cursor.getColumnIndex("DESCRIPTION"));
+        String imageUri = cursor.getString(cursor.getColumnIndex("URI"));
+        int checkbox = cursor.getInt(cursor.getColumnIndex("CHECKBOX"));
 
         item.setTitle(title);
         item.setDescription(description);
+        item.setmImageUri(Uri.parse(imageUri));
+
+
+        boolean convertedBoolean;
+        if (checkbox == 1)
+            convertedBoolean = true;
+        else
+            convertedBoolean = false;
+
+
+        item.setSolved(convertedBoolean);
+
         cursor.close();
 
         return item;

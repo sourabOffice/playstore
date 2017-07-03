@@ -23,8 +23,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_ITEM_TABLE_QUERY = "create table "+DATABASE_ITEM_TABLE +
             "( "+ "ID"+" integer primary key autoincrement,"+   /*"UUID text,"+ */  "TITLE text,"+
-            "DESCRIPTION text); ";
-//            "DESCRIPTION text,"+"Amount text,"+"Banks text); ";
+           // "DESCRIPTION text); ";
+
+            "DESCRIPTION text,"+"URI text,"+"CHECKBOX integer); ";
 
 //    private static final String DATABASE_CREATECUS =
 //            "create table Customer (_id integer primary key autoincrement, "
