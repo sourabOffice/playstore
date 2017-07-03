@@ -19,6 +19,7 @@ import android.view.MenuItem;
 
 import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.fragments.ItemListFragment;
+import com.ggktech.playstore.playstore.fragments.ToolsFragment;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,7 +33,7 @@ public class NavigationActivity extends AppCompatActivity
         FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container_updated);
         if (fragment == null) {
-            fragment = new ItemListFragment();
+            fragment = new ToolsFragment();
             fm.beginTransaction()
                     .add(R.id.fragment_container_updated, fragment)
                     .commit();
