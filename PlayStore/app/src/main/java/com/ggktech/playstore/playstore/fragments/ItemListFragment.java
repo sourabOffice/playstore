@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,7 @@ public class ItemListFragment extends Fragment {
 
             item.setTitle(mCursor.getString(mCursor.getColumnIndex("TITLE")));
             item.setDescription(mCursor.getString(mCursor.getColumnIndex("DESCRIPTION")));
+            item.setmItemRating(mCursor.getString(mCursor.getColumnIndex("RATING")));
             item.setmImageUri(Uri.parse(mCursor.getString(mCursor.getColumnIndex("URI"))));
 //            Toast.makeText(getActivity(),"ItemFragment updateUI() "+ Uri.parse(mCursor.getString(mCursor.getColumnIndex("URI"))),Toast.LENGTH_LONG).show();
 
@@ -104,6 +106,7 @@ public class ItemListFragment extends Fragment {
 
         private TextView mTitleTextView;
         private TextView mDescriptionTextView;
+        private RatingBar mRatingBar;
         private ImageView mImageView;
         private CheckBox mSolvedCheckBox;
 
@@ -112,6 +115,7 @@ public class ItemListFragment extends Fragment {
             itemView.setOnClickListener(this);
             mTitleTextView = (TextView) itemView.findViewById(R.id.list_item__item_title_text_view);
             mDescriptionTextView = (TextView) itemView.findViewById(R.id.list_item__item_description_text_view);
+            mRatingBar =(RatingBar)itemView.findViewById(R.id.rating_bar_list_item);
             mImageView =(ImageView)itemView.findViewById(R.id.imageView_list);
             mSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item__item_solved_check_box);
         }
@@ -121,6 +125,7 @@ public class ItemListFragment extends Fragment {
 
             mTitleTextView.setText(mItem.getTitle());
             mDescriptionTextView.setText(mItem.getDescription());
+            mRatingBar.setRating(Float.parseFloat(mItem.getmItemRating()));
             mImageView.setImageURI(mItem.getmImageUri());
 //            Toast.makeText(getActivity(),"ItemListFragment bindItem "+ mItem.getmImageUri(),Toast.LENGTH_LONG).show();
 

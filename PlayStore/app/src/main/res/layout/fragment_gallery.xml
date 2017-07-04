@@ -8,5 +8,5 @@
         android:id="@+id/textview_tools_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="bring it from Tools" />
+        android:text="bring it From Gallery" />
 </LinearLayout>

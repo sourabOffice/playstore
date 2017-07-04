@@ -44,7 +44,7 @@
 
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/rating_bar_list_item"
             android:layout_below="@id/list_item__item_description_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

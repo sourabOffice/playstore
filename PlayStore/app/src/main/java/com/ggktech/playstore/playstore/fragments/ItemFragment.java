@@ -47,7 +47,7 @@ public class ItemFragment extends Fragment {
     private ImageView mImageView;
     private EditText mTitleField;
     private EditText mDescriptionField;
-    private RatingBar ratingBar;
+    private RatingBar mRatingBarFragmentItem;
     private CheckBox mSolvedCheckBox;
     private Button mAddButton;
     static FragmentTransaction fragmentTransaction;
@@ -93,7 +93,7 @@ public class ItemFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_item, container, false);
 
 
-
+        mRatingBarFragmentItem = (RatingBar)v.findViewById(R.id.rating_bar_fragment_item);
         mTitleField = (EditText) v.findViewById(R.id.item_title);
         mDescriptionField = (EditText) v.findViewById(R.id.item_description);
 
@@ -102,6 +102,8 @@ public class ItemFragment extends Fragment {
         if (mItem != null)
             mDescriptionField.setText(mItem.getDescription());
 
+        if(mItem != null)
+            mRatingBarFragmentItem.setRating(Float.parseFloat(mItem.getmItemRating()));
 
 //        mTitleField.addTextChangedListener(new TextWatcher() {
 //            @Override
@@ -164,7 +166,7 @@ public class ItemFragment extends Fragment {
                     if (mTitleField.getText().toString() != null && mDescriptionField.getText().toString() != null && !mTitleField.getText().toString().equals("") && !mDescriptionField.getText().toString().equals("")) {
                         Item item = new Item();
 
-
+                        item.setmItemRating(String.valueOf(mRatingBarFragmentItem.getRating()));
                         item.setTitle(mTitleField.getText().toString());
                         item.setDescription(mDescriptionField.getText().toString());
                         item.setmImageUri(savedUri);//check

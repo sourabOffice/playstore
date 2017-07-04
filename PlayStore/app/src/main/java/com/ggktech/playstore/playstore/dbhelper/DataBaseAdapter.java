@@ -47,7 +47,7 @@ public class DataBaseAdapter {
 
     public Cursor fetchAllItemTableData(){
         return database.query(DBHelper.DATABASE_ITEM_TABLE, new String[]{"TITLE",
-                "DESCRIPTION","URI","CHECKBOX" },null,null,null,null,null);
+                "DESCRIPTION","RATING","URI","CHECKBOX" },null,null,null,null,null);
     }
 
     public void deleteTable(String tablename){
@@ -72,6 +72,7 @@ public class DataBaseAdapter {
 
         values.put("TITLE",item.getTitle());
         values.put("DESCRIPTION",item.getDescription());
+        values.put("RATING",item.getmItemRating());
         values.put("URI",item.getmImageUri().toString());
 
         values.put("CHECKBOX",(item.isSolved()) ? 1 : 0);
@@ -109,11 +110,13 @@ public class DataBaseAdapter {
         cursor.moveToFirst();
         String title = cursor.getString(cursor.getColumnIndex("TITLE"));
         String description = cursor.getString(cursor.getColumnIndex("DESCRIPTION"));
+        String rating = cursor.getString(cursor.getColumnIndex("RATING"));
         String imageUri = cursor.getString(cursor.getColumnIndex("URI"));
         int checkbox = cursor.getInt(cursor.getColumnIndex("CHECKBOX"));
 
         item.setTitle(title);
         item.setDescription(description);
+        item.setmItemRating(rating);
         item.setmImageUri(Uri.parse(imageUri));
 
 

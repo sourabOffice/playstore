@@ -16,28 +16,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.ggktech.playstore.playstore.R;
+import com.ggktech.playstore.playstore.fragments.GalleryFragment;
 import com.ggktech.playstore.playstore.fragments.ItemListFragment;
+import com.ggktech.playstore.playstore.fragments.ShareFragment;
+import com.ggktech.playstore.playstore.fragments.SlideshowFragment;
 import com.ggktech.playstore.playstore.fragments.ToolsFragment;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences settings;
+
+    DrawerLayout drawer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = fm.findFragmentById(R.id.fragment_container_updated);
-        if (fragment == null) {
-            fragment = new ToolsFragment();
-            fm.beginTransaction()
-                    .add(R.id.fragment_container_updated, fragment)
-                    .commit();
-        }
+        replaceThisFragment(new ItemListFragment());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,9 +61,20 @@ public class NavigationActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private void replaceThisFragment(Fragment receivedFragment) {
+        FragmentManager fm = getSupportFragmentManager();
+       Fragment fragment = fm.findFragmentById(R.id.fragment_container_updated);
+       // if (fragment == null) {
+            fragment = receivedFragment;
+            fm.beginTransaction()
+                    .replace(R.id.fragment_container_updated, fragment)
+                    .commit();
+        //}
+    }
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -107,17 +118,27 @@ public class NavigationActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_list) {
+            replaceThisFragment(new ItemListFragment());
+            closeDrawer();
         } else if (id == R.id.nav_gallery) {
+            replaceThisFragment(new GalleryFragment().newInstance());
+            closeDrawer();
 
+            return true;
         } else if (id == R.id.nav_slideshow) {
+            replaceThisFragment(new SlideshowFragment().newInstance());
+            closeDrawer();
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_tools) {
+            replaceThisFragment(new ToolsFragment().newInstance());
+            closeDrawer();
 
         } else if (id == R.id.nav_share) {
+            replaceThisFragment(new ShareFragment().newInstance());
+            closeDrawer();
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_log_out) {//actually this is log out
             //
             settings = getSharedPreferences("mySharedPref",0);
 
@@ -133,6 +154,12 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void closeDrawer() {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
     }
 
 

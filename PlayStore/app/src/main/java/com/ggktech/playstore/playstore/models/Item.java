@@ -12,6 +12,7 @@ public class Item {
 
     private String mTitle;
     private String mDescription;
+    private String mItemRating;
     private Uri mImageUri;
     private boolean mSolved;//new or old
 
@@ -41,6 +42,14 @@ public class Item {
 
     public void setDescription(String mDescription) {
         this.mDescription = mDescription;
+    }
+
+    public String getmItemRating() {
+        return mItemRating;
+    }
+
+    public void setmItemRating(String mItemRating) {
+        this.mItemRating = mItemRating;
     }
 
     public boolean isSolved() {
