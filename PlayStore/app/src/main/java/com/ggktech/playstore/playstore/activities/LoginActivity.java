@@ -85,8 +85,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //            if(ItemSingleton.get(getApplicationContext()).getItems().size() == 0){
 //                startActivity(new Intent(getApplicationContext(),AddItemActivity.class));
 //            } else {
-                startActivity(new Intent(getApplicationContext(),NavigationActivity.class));
+           String emailBuddy =  settings.getString("email","No email found");
+                startActivity(new Intent(getApplicationContext(),NavigationActivity.class).putExtra("EMAIL_KEY",emailBuddy));
 //            }
+            finish();
         }
 
         // create a instance of SQLite Database
@@ -383,6 +385,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
           //  addDUMMY_CREDENTIALS(mEmail, mPassword);
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("connected", true);
+            editor.putString("email",mEmail);
             editor.commit();
 
             return isSuccess;
@@ -401,10 +404,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 //                        startActivity(intentAddItem);
 //                    } else {
                         Intent intentNavigationActivity = new Intent(getApplicationContext(),NavigationActivity.class);
+                        intentNavigationActivity.putExtra("EMAIL_KEY",mEmail);
                         startActivity(intentNavigationActivity);
 //                    }
                 }
-//                finish();
+                finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
@@ -421,7 +425,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onPause() {
         super.onPause();
-        finish();
+//        finish();
     }
 
     @Override

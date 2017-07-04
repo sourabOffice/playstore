@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ggktech.playstore.playstore.R;
@@ -29,12 +30,27 @@ public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     SharedPreferences settings;
+    TextView profileName,profileEmail;
 
     DrawerLayout drawer;
+    Bundle extras;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
+
+        String extraEmail;
+        if (savedInstanceState == null) {
+            extras = getIntent().getExtras();
+            if(extras == null) {
+                extraEmail= null;
+            } else {
+                extraEmail= extras.getString("EMAIL_KEY");
+            }
+        } else {
+            extraEmail = (String) savedInstanceState.getSerializable("EMAIL_KEY");
+        }
+
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         replaceThisFragment(new ItemListFragment());
@@ -59,6 +75,13 @@ public class NavigationActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View hView = navigationView.getHeaderView(0);
+       profileName = (TextView) hView.findViewById(R.id.profile_name);
+        profileEmail = (TextView) hView.findViewById(R.id.profile_email);
+        profileName.setText("Name: " + extraEmail );
+        profileEmail.setText(extraEmail);
+
     }
 
     private void replaceThisFragment(Fragment receivedFragment) {
