@@ -5,7 +5,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 
 import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.activities.AddItemActivity;
+import com.ggktech.playstore.playstore.adapters.CustomFragmentPageAdapter;
 import com.ggktech.playstore.playstore.dbhelper.DataBaseAdapter;
 import com.ggktech.playstore.playstore.models.Item;
 import com.ggktech.playstore.playstore.models.ItemSingleton;
@@ -35,7 +38,6 @@ public class ItemListFragment extends Fragment {
     private RecyclerView mItemRecyclerView;
     private ItemAdapter mAdapter;
 
-
     DataBaseAdapter dataBaseAdapter;
 
     @Override
@@ -51,6 +53,7 @@ public class ItemListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
         mItemRecyclerView = (RecyclerView) view.findViewById(R.id.item_recycler_view);
         mItemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         updateUI();
         return view;
     }
@@ -62,12 +65,9 @@ public class ItemListFragment extends Fragment {
     }
 
     private void updateUI() {
-        //ItemSingleton itemSingleton = ItemSingleton.get(getActivity());
-       // List<Item> items = itemSingleton.getItems();
-
         Cursor mCursor =  dataBaseAdapter.fetchAllItemTableData();
 
-        List<Item> items = new ArrayList<Item>();
+        List<Item> items = new ArrayList<>();
         while(mCursor.moveToNext()) {
             Item item = new Item();
 
@@ -75,8 +75,6 @@ public class ItemListFragment extends Fragment {
             item.setDescription(mCursor.getString(mCursor.getColumnIndex("DESCRIPTION")));
             item.setmItemRating(mCursor.getString(mCursor.getColumnIndex("RATING")));
             item.setmImageUri(Uri.parse(mCursor.getString(mCursor.getColumnIndex("URI"))));
-//            Toast.makeText(getActivity(),"ItemFragment updateUI() "+ Uri.parse(mCursor.getString(mCursor.getColumnIndex("URI"))),Toast.LENGTH_LONG).show();
-
 
             int checkboxInt= mCursor.getInt(mCursor.getColumnIndex("CHECKBOX"));
             boolean convertedBoolean;
@@ -89,8 +87,6 @@ public class ItemListFragment extends Fragment {
             item.setSolved(convertedBoolean);
             items.add(item); //add the item
         }
-
-        //write the code to get items from db
 
         if (mAdapter == null) {
             mAdapter = new ItemAdapter(items);
@@ -127,7 +123,6 @@ public class ItemListFragment extends Fragment {
             mDescriptionTextView.setText(mItem.getDescription());
             mRatingBar.setRating(Float.parseFloat(mItem.getmItemRating()));
             mImageView.setImageURI(mItem.getmImageUri());
-//            Toast.makeText(getActivity(),"ItemListFragment bindItem "+ mItem.getmImageUri(),Toast.LENGTH_LONG).show();
 
             mSolvedCheckBox.setChecked(mItem.isSolved());
         }
@@ -136,7 +131,6 @@ public class ItemListFragment extends Fragment {
         public void onClick(View v) {
             Intent intent = AddItemActivity.newIntent(getActivity(), mItem.getTitle());
             startActivity(intent);
-
         }
     }
 

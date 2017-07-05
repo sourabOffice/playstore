@@ -27,7 +27,7 @@ public class ItemSingleton {
 //        for (int i = 0; i < 20; i++) {
 //            Item item = new Item();
 //            item.setTitle("Item #" + i);
-//            item.setDescription("Stupid description " + i);
+//            item.setDescription("Stupid playlistTrack " + i);
 //            item.setSolved(i % 2 == 0);
 ////             Every other one
 //            mItems.add(item);

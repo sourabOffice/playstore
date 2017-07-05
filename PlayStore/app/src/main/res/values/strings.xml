@@ -13,12 +13,12 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="item_title_hint">Enter a title for the Item.</string>
+    <string name="item_title_hint">Enter a PlaylistTitle for the Item.</string>
     <string name="item_title_label">Title</string>
     <string name="item_details_label">Details</string>
     <string name="item_solved_label">Updated</string>
     <string name="add_item">Add</string>
-    <string name="item_description_hint">Enter description</string>
+    <string name="item_description_hint">Enter playlistTrack</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
@@ -28,4 +28,6 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="new_item">New Item</string>
     <string name="log_out">Log out</string>
+    <string name="recently_played_songs">Recently played songs</string>
+    <string name="your_playlists">Your playlists</string>
 </resources>

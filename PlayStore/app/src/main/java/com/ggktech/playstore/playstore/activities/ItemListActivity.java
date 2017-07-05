@@ -12,6 +12,7 @@ import com.ggktech.playstore.playstore.fragments.ItemListFragment;
  * Created by Sourabh.Wasnik on 6/29/2017.
  */
 
+//***NOTE this class in no longer using ItemListFragment. Its being hoseted by NavigationActivity
 public class ItemListActivity extends FragmentActivity {
 
     /** Called when the activity is first created. */

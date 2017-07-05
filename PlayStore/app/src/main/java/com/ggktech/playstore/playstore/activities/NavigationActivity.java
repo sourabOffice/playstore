@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.fragments.GalleryFragment;
 import com.ggktech.playstore.playstore.fragments.ItemListFragment;
+import com.ggktech.playstore.playstore.fragments.LibraryFragment;
+import com.ggktech.playstore.playstore.fragments.PlaylistFragment;
 import com.ggktech.playstore.playstore.fragments.ShareFragment;
 import com.ggktech.playstore.playstore.fragments.SlideshowFragment;
 import com.ggktech.playstore.playstore.fragments.ToolsFragment;
@@ -34,6 +36,7 @@ public class NavigationActivity extends AppCompatActivity
 
     DrawerLayout drawer;
     Bundle extras;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +54,7 @@ public class NavigationActivity extends AppCompatActivity
             extraEmail = (String) savedInstanceState.getSerializable("EMAIL_KEY");
         }
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        replaceThisFragment(new ItemListFragment());
+        replaceThisFragment(new LibraryFragment());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -67,7 +68,7 @@ public class NavigationActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
@@ -142,10 +143,10 @@ public class NavigationActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_list) {
-            replaceThisFragment(new ItemListFragment());
+            replaceThisFragment(new LibraryFragment());
             closeDrawer();
         } else if (id == R.id.nav_gallery) {
-            replaceThisFragment(new GalleryFragment().newInstance());
+            replaceThisFragment(new PlaylistFragment());
             closeDrawer();
 
             return true;
