@@ -26,7 +26,6 @@
         </activity>
         <activity android:name=".activities.SignUPActivity" />
         <activity android:name=".activities.AddItemActivity" />
-        <activity android:name=".activities.ItemListActivity" />
         <activity
             android:name=".activities.NavigationActivity"
             android:label="@string/title_activity_navigation"

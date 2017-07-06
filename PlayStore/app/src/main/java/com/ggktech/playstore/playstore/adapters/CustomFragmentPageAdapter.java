@@ -19,6 +19,7 @@ public class CustomFragmentPageAdapter extends FragmentPagerAdapter {
     public CustomFragmentPageAdapter(FragmentManager fm) {
         super(fm);
     }
+
     @Override
     public Fragment getItem(int position) {
         switch (position){
@@ -30,13 +31,17 @@ public class CustomFragmentPageAdapter extends FragmentPagerAdapter {
                 return new SongFragment();
             case 3:
                 return new ToolsFragment();
+            default:
+                return null;
         }
-        return null;
+
     }
+
     @Override
     public int getCount() {
         return FRAGMENT_COUNT;
     }
+
     @Override
     public CharSequence getPageTitle(int position) {
         switch (position){

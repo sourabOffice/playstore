@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.ggktech.playstore.playstore.R;
 import com.ggktech.playstore.playstore.activities.AddItemActivity;
-import com.ggktech.playstore.playstore.activities.ItemListActivity;
 import com.ggktech.playstore.playstore.activities.NavigationActivity;
 import com.ggktech.playstore.playstore.activities.SwipeActivity;
 import com.ggktech.playstore.playstore.dbhelper.DBHelper;
@@ -68,7 +67,7 @@ public class ItemFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // get Instance  of Database Adapter
+        // get Instance of Database Adapter
         dataBaseAdapter = new DataBaseAdapter(getActivity());
         dataBaseAdapter = dataBaseAdapter.open();
 

@@ -94,7 +94,6 @@ public class ItemListFragment extends Fragment {
         }
             mAdapter.mItems = items;
             mAdapter.notifyDataSetChanged();
-
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
